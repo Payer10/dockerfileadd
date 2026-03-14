@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: myproject_web
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=0
+
+  nginx:
+    image: nginx:latest
+    container_name: myproject_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static_volume:/app/static
+    depends_on:
+      - web
+
+volumes:
+  static_volume:
